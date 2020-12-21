@@ -1,24 +1,28 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './material.module';
-import { TaskComponent } from './task/task.component';
+import { BrowserModule } from '@angular/platform-browser';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { TaskDialogComponent } from './task-dialog/task-dialog.component';
 import { FormsModule } from '@angular/forms';
+import { MaterialModule } from './material.module';
+import { NgModule } from '@angular/core';
+import { TaskComponent } from './task/task.component';
+import { TaskDialogComponent } from './task-dialog/task-dialog.component';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [AppComponent, TaskComponent, TaskDialogComponent],
   imports: [
-    BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
     BrowserAnimationsModule,
-    MaterialModule,
+    BrowserModule,
     DragDropModule,
     FlexLayoutModule,
     FormsModule,
+    MaterialModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

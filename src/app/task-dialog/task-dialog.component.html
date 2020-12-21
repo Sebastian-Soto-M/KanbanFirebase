@@ -1,28 +1,32 @@
-<mat-form-field appearance="outline">
-  <mat-label>Title</mat-label>
-  <input matInput cdkFocusInitial [(ngModel)]="data.task.title" />
-</mat-form-field>
-<br />
-<mat-form-field appearance="outline">
-  <mat-label>Description</mat-label>
-  <textarea matInput [(ngModel)]="data.task.description"></textarea>
-</mat-form-field>
-
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+  <span>{{ data.enableDelete ? "Edit" : "New" }} Task</span>
+  <button mat-icon-button (click)="cancel()"><mat-icon>close</mat-icon></button>
+</div>
+<div mat-dialog-content>
+  <mat-form-field appearance="outline" fxFill>
+    <mat-label>Title</mat-label>
+    <input matInput cdkFocusInitial [(ngModel)]="data.task.title" />
+  </mat-form-field>
+  <br />
+  <mat-form-field appearance="outline" fxFill>
+    <mat-label>Description</mat-label>
+    <textarea matInput [(ngModel)]="data.task.description"></textarea>
+  </mat-form-field>
+</div>
 <div mat-dialog-actions align="end">
-  <button mat-button (click)="cancel()">Cancel</button>
   <button
     *ngIf="data.enableDelete"
-    mat-fab
+    mat-icon-button
     color="accent"
     [mat-dialog-close]="{ task: data.task, delete: true }"
   >
     <mat-icon>delete</mat-icon>
   </button>
   <button
-    mat-raised-button
+    mat-icon-button
     color="primary"
     [mat-dialog-close]="{ task: data.task }"
   >
-    OK
+    <mat-icon>save</mat-icon>
   </button>
 </div>

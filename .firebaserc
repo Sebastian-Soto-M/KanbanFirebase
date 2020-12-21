@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "kanbanfire-e5344": {
+      "hosting": {
+        "kanban-fire": [
+          "kanbanfire-e5344"
+        ]
+      }
+    }
+  }
+}
