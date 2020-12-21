@@ -1,0 +1,13 @@
+<mat-card class="item" (dbclick)="edit.emit(task)">
+  <mat-card-header>
+    <mat-icon matCardAvatar color="primary">article</mat-icon>
+    <mat-card-title-group>
+      <mat-card-title>
+        {{ task.title }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ task.description }}
+      </mat-card-subtitle>
+    </mat-card-title-group>
+  </mat-card-header>
+</mat-card>
