@@ -1,17 +1,19 @@
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+} from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
-import { Status } from './status.model';
+import { BehaviorSubject } from 'rxjs';
+import { Status } from './status.enum';
 import {
   TaskDialogComponent,
   TaskDialogResult,
 } from './task-dialog/task-dialog.component';
 import { Task } from './task/task';
+
+export declare type FBList = 'done' | 'todo' | 'inProgress';
 
 @Component({
   selector: 'app-root',
@@ -19,14 +21,9 @@ import { Task } from './task/task';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  todo = this.store
-    .collection('todo', (ref) => ref.where('status', '==', Status.ACTIVE))
-    .valueChanges({ idField: 'id' });
-  inProgress = this.store
-    .collection('inProgress')
-    .valueChanges({ idField: 'id' });
-  done = this.store.collection('done').valueChanges({ idField: 'id' });
-
+  todo = this.getObservable('todo');
+  inProgress = this.getObservable('inProgress');
+  done = this.getObservable('done');
   constructor(private dialog: MatDialog, private store: AngularFirestore) {}
 
   drop(event: CdkDragDrop<Task[]>): void {
@@ -60,7 +57,7 @@ export class AppComponent {
     });
   }
 
-  editTask(list: 'done' | 'todo' | 'inProgress', task: Task): void {
+  editTask(list: FBList, task: Task): void {
     console.warn('emitted');
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '270px',
@@ -77,5 +74,14 @@ export class AppComponent {
         this.store.collection(list).doc(task.id).update(task);
       }
     });
+  }
+
+  private getObservable(list: FBList): BehaviorSubject<Task[]> {
+    const subject = new BehaviorSubject([]);
+    this.store
+      .collection(list, (ref) => ref.where('status', '==', Status.ACTIVE))
+      .valueChanges({ idField: 'id' })
+      .subscribe((val) => subject.next(val));
+    return subject;
   }
 }
